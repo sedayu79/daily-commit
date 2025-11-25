@@ -8,10 +8,14 @@ on:
 jobs:
   daily:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update timestamp file
         run: |
@@ -19,8 +23,8 @@ jobs:
 
       - name: Commit & push changes
         run: |
-          git config user.name "sedayu79"
-          git config user.email "sedayuu@yahoo.com"
+          git config --global user.name "sedayu79"
+          git config --global user.email "sedayuu@yahoo.com"
           git add last.txt
           git commit -m "Daily update: $(date -u)" || echo "No changes"
           git push
