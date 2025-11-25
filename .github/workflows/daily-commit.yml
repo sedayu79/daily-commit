@@ -1,0 +1,26 @@
+name: Daily Commit
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  daily:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Update timestamp file
+        run: |
+          echo "Last daily commit: $(date -u)" > last.txt
+
+      - name: Commit & push changes
+        run: |
+          git config user.name "sedayu79"
+          git config user.email "sedayuu@yahoo.com"
+          git add last.txt
+          git commit -m "Daily update: $(date -u)" || echo "No changes"
+          git push
